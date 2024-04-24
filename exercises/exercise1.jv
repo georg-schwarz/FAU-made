@@ -1,0 +1,18 @@
+pipeline OpenflightsAirports {
+    AirportsExtractor
+        -> AirportsTableInterpreter
+        -> AirportsLoader;
+    
+    block AirportsExtractor oftype CSVExtractor {
+        url: "https://opendata.rhein-kreis-neuss.de/api/explore/v2.1/catalog/datasets/rhein-kreis-neuss-flughafen-weltweit/exports/csv?lang=en&timezone=Europe%2FBerlin&use_labels=true&delimiter=%3B";
+    }
+
+    block AirportsTableInterpreter oftype TableInterpreter {
+        columns: [];
+    }
+
+    block AirportsLoader oftype SQLiteLoader {
+        table: "airports";
+        file: "airports.sqlite";
+    }
+}
